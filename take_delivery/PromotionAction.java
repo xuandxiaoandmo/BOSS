@@ -55,7 +55,48 @@ public class PromotionAction extends CommonAction<Promotion> {
     @Autowired
     private PromotionService promotionService;
 
+    @Action(value = "promotionAction_save",
+            results = {@Result(name = "success",
+                    location = "/pages/take_delivery/promotion.html",
+                    type = "redirect")})
+    public String save() {
 
+        Promotion promotion = getModel();
+        // 保存封面图片
+        try {
+            // 指定保存图片的文件夹
+            String dirPath = "/upload";
+            // D:aa/upload/a.jpg
+            // 获取保存图片的文件夹的绝对磁盘路径
+            ServletContext servletContext =
+                    ServletActionContext.getServletContext();
+            String dirRealPath = servletContext.getRealPath(dirPath);
+
+            // 获取文件名的后缀
+            // a.jpg =>不加1 .jpg ,加1 jpg
+            String suffix = titleImgFileFileName
+                    .substring(titleImgFileFileName.lastIndexOf("."));
+            // 使用UUId生成文件名
+            String fileName =
+                    UUID.randomUUID().toString().replaceAll("-", "") + suffix;
+            File destFile = new File(dirRealPath + "/" + fileName);
+
+            // 保存文件
+            FileUtils.copyFile(titleImgFile, destFile);
+            // http://localhost:8080/bos_management_web/upload/a.jpg
+            promotion.setTitleImg("/upload/" + fileName);
+        } catch (IOException e) {
+
+            e.printStackTrace();
+            promotion.setTitleImg(null);
+
+        }
+
+        promotion.setStatus("1");
+
+        promotionService.save(promotion);
+        return SUCCESS;
+    }
 
     
     @Action(value = "promotionAction_pageQuery")

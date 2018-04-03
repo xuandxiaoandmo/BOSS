@@ -28,6 +28,11 @@ import net.sf.json.JsonConfig;
 @Scope("prototype")
 public class TakeTimeAction extends CommonAction<TakeTime> {
 
+    public TakeTimeAction() {
+
+        super(TakeTime.class);
+
+    }
 
     @Autowired
     private TakeTimeService takeTimeService;

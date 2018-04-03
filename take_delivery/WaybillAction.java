@@ -33,7 +33,9 @@ public class WaybillAction extends CommonAction<WayBill> {
         super(WayBill.class);
     }
 
-   
+    @Autowired
+    private WayBillService wayBillService;
+
     @Action("waybillAction_save")
     public String save() throws IOException {
 
