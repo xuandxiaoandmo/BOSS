@@ -33,7 +33,17 @@ public class RoleAction extends CommonAction<Role> {
 
     @Autowired
     private RoleService roleService;
-     return NONE;
+    @Action(value = "roleAction_pageQuery")
+    public String pageQuery() throws IOException {
+
+        // EasyUI的页码是从1开始的
+        // SPringDataJPA的页码是从0开始的
+        // 所以要-1
+
+        Pageable pageable = new PageRequest(page - 1, rows);
+
+       
+        return NONE;
     }
 
     // 使用属性驱动获取菜单和权限的ID
@@ -43,10 +53,37 @@ public class RoleAction extends CommonAction<Role> {
         this.menuIds = menuIds;
     }
 
-   
+    private Long[] permissionIds;
 
     public void setPermissionIds(Long[] permissionIds) {
         this.permissi
+        this.permissionIds = permissionIds;
+    }
+
+  
+        roleService.save(getModel(), menuIds, permissionIds);
+        return SUCCESS;
+    }
+    
+    //修改
+    @Action(value = "roleAction_edit", results = {@Result(name = "success",
+            location = "/pages/system/role.html", type = "redirect")})
+    public String edit() {
+        System.out.println("menuIds=="+menuIds+"===permissionIds"+permissionIds+"id=="+getModel().getId());
+        roleService.edit(getModel(), menuIds, permissionIds);
+        return SUCCESS;
+    }
+        Page<Role> page = roleService.findAll(null);
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(new String[] {"users","menus","permissions"});
+
+        List<Role> list = page.getContent();
+        list2json(list, jsonConfig);
+        return NONE;
+    }
+    
+    //根据角色ID获.println("角色ID="+id);
+        
         List<Permission> list =roleService.findByRoleId(id);
         System.out.println("权限IDS="+list);
         
@@ -58,6 +95,12 @@ public class RoleAction extends CommonAction<Role> {
     }
     
     //根据角色ID获取Excludes(new String[]{"roles","childrenMenus","parentMenu"});
+    //根据角色ID获取菜单
+    @Action(value="roleAction_findByRoleId4Ztree")
+    public Stringt.println("角色ID==菜单="+id);
+        
+        List<Menu> lsonConfig=new JsonConfig();
+        jsonConfig.setExcludes(new String[]{"roles","childrenMenus","parentMenu"});
         list2json(list, jsonConfig);
         return NONE;
     }

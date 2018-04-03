@@ -28,16 +28,16 @@ import net.sf.json.JsonConfig;
 @Scope("prototype")
 public class TakeTimeAction extends CommonAction<TakeTime> {
 
+    public TakeTimeAction() {
+
+        super(TakeTime.class);
+
+    }
 
     @Autowired
     private TakeTimeService takeTimeService;
 
-    @Action("takeTimeAction_listajax")
-    public String listajax() throws IOException {
-        // 查询所有的在职的快递员
-
-        List<TakeTime> list = takeTimeService.findAll();
-
+   
         list2json(list, null);
         return NONE;
     }

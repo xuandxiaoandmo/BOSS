@@ -1,7 +1,7 @@
  文森特厉害
 HEAD
 什么情f况况
- aote 
+ aote  
  我:这条数据是我写的
  
  mvn install:install-file -DgroupId=com.alibaba     -DartifactId=fastjson -Dversion=1.2.7 -Dpackaging=jar -Dfile=路径

@@ -32,11 +32,16 @@ import net.sf.json.JsonConfig;
 @Namespace("/") // 等价于struts.xml文件中package节点namespace属性
 @ParentPackage("struts-default") // 等价于struts.xml文件中package节点extends属性
 @Controller // spring 的注解,控制层代码
-@Scope("protixedAreaService fixedAreaService;
+@Scope("prototype") // spring 的注解,多例
+public class FixedAreaAction extends CommonAction<FixedArea> {
 
-    @Action(value = "fixedAreaAction_save", results = {@Result(name = "success",
-            location = "/pages/base/fixed_area.html", type = "redirect")})
-    public String save() {
+    public FixedAreaAction() {
+        super(FixedArea.class);
+    }
+
+   
+
+  
 
         fixedAreUCCESS;
     
@@ -58,6 +63,28 @@ import net.sf.json.JsonConfig;
                 .getCollection(Customer.c
     }
 
+    // 向CRM系统发起请求,查询已关联指定定区的客户
+    @Action(value = "fixedAreaAction_findAssociatedCustomers")
+    public String findAssociatedCustomers() throws IOException {
+
+        List<Customer> list = (List<Customer>) WebClient.create(
+                "http://localhost:8180/crm/webService/customerService/findCustomersAssociated2FixedArea")
+                .query("fixedAreaId", getModel().getId())
+                .type(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .getCollection(Customer.class);
+
+        list2json(list, null);
+        return NONE;
+    }
+
+    // 使用属性驱动获取要关联到指定定区的客户ID
+    private Long[] customerIds;
+
+    public void setCustomerIds(Long[] customerIds) {
+        this.customerIds = customerIds;
+    }
+
     // 向CRM系统发起请求,关联客户
     @Action(value = "fixedAreaAction_assignCustomers2FixedArea",
             results = {@Result(name = "success",
@@ -72,12 +99,34 @@ import net.sf.json.JsonConfig;
                 .query("fixedAreaId", getModel().getId())
                 .query("customerIds", customerIds)
                 .type(MediaType.APPLICATION_JSON)
-                .accept(Med
+                .accept(MediaType.APPLICATION_JSON).put(null);
+        return SUCCESS;
+    }
+
+    // 使用属性驱动获取快递员和时间的ID
+    private Long courierId;
+    private Long takeTimeId;
+
+    public void setCourierId(Long courierId) {
+        this.courierId = courierId;
+    }
+
+    public void setTakeTimeId(Long takeTimeId) {
+        this.takeTimeId = takeTimeId;
+    }
+
     // 关联快递员
     @Action(value = "fixedAreaAction_associationCourierToFixedArea",
             results = {@Result(name = "success",
                     location = "/pages/base/fixed_area.html",
-                    type = "redirect"
+                    type = "redirect")})
+    public String associationCourierToFixedArea() throws IOException {
+        if(courierId != null){
+            fixedAreaService.associationCourierToFixedArea(getModel().getId(),
+                    courierId, takeTimeId);
+        }
+        return SUCCESS;
+    }
 
     // 使用属性驱动获取分区的Id
     private Long[] subAreaIds;
@@ -87,3 +136,15 @@ import net.sf.json.JsonConfig;
     }
 
     // 关联分区
+    @Action(value = "fixedAreaAction_assignSubAreas2FixedArea",
+            results = {@Result(name = "success",
+                    location = "/pages/base/fixed_area.html",
+                    type = "redirect")})
+    public String assignSubAreas2FixedArea() throws IOException {
+        if(subAreaIds != null && subAreaIds.length > 0){
+            fixedAreaService.assignSubAreas2FixedArea(getModel().getId(),
+                    subAreaIds);
+        }
+        return SUCCESS;
+    }
+}

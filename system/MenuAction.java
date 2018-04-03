@@ -20,6 +20,8 @@ import com.itheima.bos.domr/>
  * Function: <br/>解
     }
 
+
+    // struts框架在封装数据的时候优先封装给模型对象的
     @Action(value = "menuAction_save", results = {@Result(name = "success",
             location = "/pages/system/menu.html", type = "redirect")})
     public String save() {时候优先封装给模型对象的
@@ -27,9 +29,18 @@ import com.itheima.bos.domr/>
     public String pageQuery()
                 new String[] {"roles", "childrenMenus", "parentMenu"});
         page2json(page, jsonConfig);
+    public String pageQuery() throws IOException {
+
+        // EasyUI的页码是从1开始的
+        // SPringDataJPA的页码是从0开始的
+        // 所以要-1
+
+
         Page<Menu> page = menuService.findAll(pageable);
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.setExcludes(
+       
+        page2json(page, jsonConfig);
         return NONE;
     }
 
@@ -39,10 +50,8 @@ import com.itheima.bos.domr/>
         Subject subject = SecurityUtils.getSubject();
         User user = (User) subject.getPrincipal();
 
-        List<Menu> list = menuService.findbyUser(user);
-        JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(
-                new String[] {"roles", "childrenMenus", "parentMenu","children"});
+      
+      
 
         list2json(list, jsonConfig);
         return NONE;

@@ -32,48 +32,11 @@ import net.sf.json.JsonConfig;
 @Scope("prototype") // spring 的注解,多例
 public class PermissionAction extends CommonAction<Permission> {
 
-    public PermissionAction() {
-
-        super(Permission.class);
-    }
-
-    @Autowired
-    private PermissionService permissionService;
-
-    @Action(value = "permissonAction_save", results = {@Result(name = "success",
-            location = "/pages/system/permission.html", type = "redirect")})
-    public String save() {
-
-        permissionService.save(getModel());
-        return SUCCESS;
     }
 
     // struts框架在封装数据的时候优先封装给模型对象的
-    @Action(value = "permissonAction_pageQuery")
-    public String pageQuery() throws IOException {
+    @Action(value = "permisson
 
-        // EasyUI的页码是从1开始的
-        // SPringDataJPA的页码是从0开始的
-        // 所以要-1
-
-        Pageable pageable = new PageRequest(page - 1, rows);
-
-        Page<Permission> page = permissionService.findAll(pageable);
-        JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[] {"roles"});
-        page2json(page, jsonConfig);
-        return NONE;
-    }
-
-    @Action(value = "permissionAction_findAll")
-    public String findAll() throws IOException {
-
-        Page<Permission> page = permissionService.findAll(null);
-        List<Permission> list = page.getContent();
-        JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[] {"roles"});
-        list2json(list, jsonConfig);
-        return NONE;
     }
     
     private Long roleID;

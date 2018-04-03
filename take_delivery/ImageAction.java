@@ -45,30 +45,22 @@ public class ImageAction extends ActionSupport {
     }
 
     // 使用属性驱动获取用户上传的文件名
-    private String imgFileFileName;
-
-    public void setImgFileFileName(String imgFileFileName) {
-        this.imgFileFileName = imgFileFileName;
-    }
+  
 
     @Action("imageAction_upload")
     public String upload() throws IOException {
 
         Map<String, Object> map = new HashMap<>();
 
-        try {
-            // 指定保存图片的文件夹
-            String dirPath = "/upload";
-            // D:aa/upload/a.jpg
-            // 获取保存图片的文件夹的绝对磁盘路径
-            ServletContext servletContext =
-                    ServletActionContext.getServletContext();
-            String dirRealPath = servletContext.getRealPath(dirPath);
+       
+       
 
             // 获取文件名的后缀
             // a.jpg =>不加1 .jpg ,加1 jpg
             String suffix =
             
+            // a.jpg =>不加1 .jpg ,加1
+            FileUtils.copyFile(imgFiletContext.getContextPath();
 
             map.put("error", 0);
             map.put("url", contextPath + "/upload/" + fileName);

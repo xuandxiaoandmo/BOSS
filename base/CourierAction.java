@@ -55,13 +55,7 @@ public class CourierAction extends CommonAction<Courier> {
     @Autowired
     private CourierService courierService;
 
-    @Action(value = "courierAction_save", results = {@Result(name = "success",
-            location = "/pages/base/courier.html", type = "redirect")})
-    public String save() {
-
-        courierService.save(getModel());
-        return SUCCESS;
-    }
+ 
 
     @Action("courierAction_pageQuery")
     public String pageQuery() throws IOException {
@@ -148,21 +142,7 @@ public class CourierAction extends CommonAction<Courier> {
         return NONE;
     }
 
-    // 使用属性驱动获取要删除的快递员的Id
-    private String ids;
-
-    public void setIds(String ids) {
-        this.ids = ids;
-    }
-
-    // 批量删除
-    @Action(value = "courierAction_batchDel",
-            results = {@Result(name = "success",
-                    location = "/pages/base/courier.html", type = "redirect")})
-    public String batchDel() {
-        courierService.batchDel(ids);
-        return SUCCESS;
-    }
+   
 
     @Action("courierAction_listajax")
     public String listajax() throws IOException {
