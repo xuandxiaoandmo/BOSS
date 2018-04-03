@@ -52,10 +52,7 @@ public class RoleAction extends CommonAction<Role> {
 
         Pageable pageable = new PageRequest(page - 1, rows);
 
-        Page<Role> page = roleService.findAll(pageable);
-        JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[] {"users", "permissions", "menus"});
-        page2json(page, jsonConfig);
+       
         return NONE;
     }
 
@@ -72,10 +69,7 @@ public class RoleAction extends CommonAction<Role> {
         this.permissionIds = permissionIds;
     }
 
-    @Action(value = "roleAction_save", results = {@Result(name = "success",
-            location = "/pages/system/role.html", type = "redirect")})
-    public String save() {
-
+  
         roleService.save(getModel(), menuIds, permissionIds);
         return SUCCESS;
     }
@@ -88,10 +82,6 @@ public class RoleAction extends CommonAction<Role> {
         roleService.edit(getModel(), menuIds, permissionIds);
         return SUCCESS;
     }
-
-    @Action(value = "roleAction_findAll")
-    public String findAll() throws IOException {
-
         Page<Role> page = roleService.findAll(null);
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.setExcludes(new String[] {"users","menus","permissions"});
@@ -101,11 +91,7 @@ public class RoleAction extends CommonAction<Role> {
         return NONE;
     }
     
-    //根据角色ID获取权限
-    @Action(value="roleAction_findByRoleId")
-    public String findByRoleId() throws IOException{
-        Long id=getModel().getId();
-        System.out.println("角色ID="+id);
+    //根据角色ID获.println("角色ID="+id);
         
         List<Permission> list =roleService.findByRoleId(id);
         System.out.println("权限IDS="+list);
@@ -119,13 +105,9 @@ public class RoleAction extends CommonAction<Role> {
     
     //根据角色ID获取菜单
     @Action(value="roleAction_findByRoleId4Ztree")
-    public String findByRoleId4Ztree() throws IOException{
-        Long id=getModel().getId();
-        System.out.println("角色ID==菜单="+id);
+    public Stringt.println("角色ID==菜单="+id);
         
-        List<Menu> list =roleService.findByRoleId4Ztree(id);
-        
-        JsonConfig jsonConfig=new JsonConfig();
+        List<Menu> lsonConfig=new JsonConfig();
         jsonConfig.setExcludes(new String[]{"roles","childrenMenus","parentMenu"});
         list2json(list, jsonConfig);
         return NONE;

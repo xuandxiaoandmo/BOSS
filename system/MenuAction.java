@@ -53,13 +53,6 @@ public class MenuAction extends CommonAction<Menu> {
         return NONE;
     }
 
-    @Action(value = "menuAction_save", results = {@Result(name = "success",
-            location = "/pages/system/menu.html", type = "redirect")})
-    public String save() {
-
-        menuService.save(getModel());
-        return SUCCESS;
-    }
 
     // struts框架在封装数据的时候优先封装给模型对象的
     @Action(value = "menuAction_pageQuery")
@@ -69,13 +62,10 @@ public class MenuAction extends CommonAction<Menu> {
         // SPringDataJPA的页码是从0开始的
         // 所以要-1
 
-        Pageable pageable = new PageRequest(
-                Integer.parseInt(getModel().getPage()) - 1, rows);
 
         Page<Menu> page = menuService.findAll(pageable);
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(
-                new String[] {"roles", "childrenMenus", "parentMenu"});
+       
         page2json(page, jsonConfig);
         return NONE;
     }
@@ -86,10 +76,8 @@ public class MenuAction extends CommonAction<Menu> {
         Subject subject = SecurityUtils.getSubject();
         User user = (User) subject.getPrincipal();
 
-        List<Menu> list = menuService.findbyUser(user);
-        JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(
-                new String[] {"roles", "childrenMenus", "parentMenu","children"});
+      
+      
 
         list2json(list, jsonConfig);
         return NONE;

@@ -40,8 +40,7 @@ public class SubAreaAction extends CommonAction<SubArea> {
         super(SubArea.class);
     }
 
-    @Autowired
-    private SubAreaService subAreaService;
+  
 
     @Action(value = "subareaAction_save", results = {@Result(name = "success",
             location = "/pages/base/sub_area.html", type = "redirect")})
@@ -51,23 +50,7 @@ public class SubAreaAction extends CommonAction<SubArea> {
         return SUCCESS;
     }
 
-    @Action(value = "subAction_pageQuery")
-    public String pageQuery() throws IOException {
-
-        // EasyUI的页码是从1开始的
-        // SPringDataJPA的页码是从0开始的
-        // 所以要-1
-
-        Pageable pageable = new PageRequest(page - 1, rows);
-
-        Page<SubArea> page = subAreaService.findAll(pageable);
-
-        JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[] {"subareas", "couriers"});
-
-        page2json(page, jsonConfig);
-        return NONE;
-    }
+   
 
     // 查询未关联的分区
     @Action(value = "subAreaAction_findUnAssociatedSubAreas")
@@ -92,18 +75,6 @@ public class SubAreaAction extends CommonAction<SubArea> {
         return NONE;
     }
     
-    /**
-     * 区域数据柱状图
-     */
-    @Action(value = "subAreaAction_exportfigure")
-    public String exportfigure() throws IOException {
-        List<LinkedHashMap<String, Object>> list = subAreaService.exportfigure();
-        String json = com.alibaba.fastjson.JSONObject.toJSONString(list);
-        System.out.println(json);
-        HttpServletResponse response = ServletActionContext.getResponse();
-        response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(json);
-        return NONE;
-    }
+    
     
 }

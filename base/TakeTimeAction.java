@@ -37,12 +37,7 @@ public class TakeTimeAction extends CommonAction<TakeTime> {
     @Autowired
     private TakeTimeService takeTimeService;
 
-    @Action("takeTimeAction_listajax")
-    public String listajax() throws IOException {
-        // 查询所有的在职的快递员
-
-        List<TakeTime> list = takeTimeService.findAll();
-
+   
         list2json(list, null);
         return NONE;
     }
