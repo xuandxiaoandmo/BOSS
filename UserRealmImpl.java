@@ -101,7 +101,17 @@ public class UserRealmImpl extends AuthorizingRealm implements UserService {
 		
 		return null;
 	}
+    //分页查询数据
+    @Override
+	public Page<User> findAll(Pageable pageable) {
+		return userRepository.findAll(pageable);
+	}
 
+   //保存用户的方法
+	@Override
+	public void save(User model) {
+		userRepository.save(model);
+	}
 	
 	
 }
