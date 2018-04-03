@@ -84,14 +84,34 @@ public class UserRealmImpl extends AuthorizingRealm implements UserService {
 		
 		
 	}
+	
+    //认证方法
+	@Override
+	protected AuthenticationInfo doGetAuthenticationInfo(
+			AuthenticationToken token) throws AuthenticationException {
+		UsernamePasswordToken passwordToken=(UsernamePasswordToken)token;
+		
+		String username = passwordToken.getUsername();
+		User user = userRepository.findByUsername(username);
+		
+		if (user != null) {
+			SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(user, user.getPassword(), getName());
+			return simpleAuthenticationInfo;
+		} 
+		
+		return null;
+	}
+    //分页查询数据
     @Override
 	public Page<User> findAll(Pageable pageable) {
 		return userRepository.findAll(pageable);
 	}
 
+   //保存用户的方法
 	@Override
 	public void save(User model) {
 		userRepository.save(model);
 	}
+	
 	
 }
