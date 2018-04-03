@@ -44,26 +44,12 @@ public class PromotionAction extends CommonAction<Promotion> {
     private File titleImgFile;
     private String titleImgFileFileName;
 
-    public void setTitleImgFile(File titleImgFile) {
-        this.titleImgFile = titleImgFile;
-    }
-
+   
     public void setTitleImgFileFileName(String titleImgFileFileName) {
         this.titleImgFileFileName = titleImgFileFileName;
     }
 
-    @Autowired
-    private PromotionService promotionService;
 
-
-
-    
-    @Action(value = "promotionAction_pageQuery")
-    public String pageQuery() throws IOException {
-
-        // EasyUI的页码是从1开始的
-        // SPringDataJPA的页码是从0开始的
-        // 所以要-1
 
         Pageable pageable = new PageRequest(page - 1, rows);
 

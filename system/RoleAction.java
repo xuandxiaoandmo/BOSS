@@ -13,16 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-
-import com.itheima.bos.domain.system.Menu;
-import com.itheima.bos.domain.system.Permission;
-import com.itheima.bos.domain.system.Role;
-import com.itheima.bos.service.system.RoleService;
-import com.itheima.bos.web.action.CommonAction;
-
+import org.springfr
 import net.sf.json.JsonConfig;
 
 /**
@@ -42,7 +33,6 @@ public class RoleAction extends CommonAction<Role> {
 
     @Autowired
     private RoleService roleService;
-
      return NONE;
     }
 
@@ -56,27 +46,7 @@ public class RoleAction extends CommonAction<Role> {
    
 
     public void setPermissionIds(Long[] permissionIds) {
-        this.permissionIds = permissionIds;
-    }
-
-    
-    //修改
-    @Action(value = "roleAction_edit", results = {@Result(name = "success",
-            location = "/pages/system/role.html", type = "redirect")})
-    public String edit() {
-        System.out.println("menuIds=="+menuIds+"===permissionIds"+permissionIds+"id=="+getModel().getId());
-        roleService.edit(getModel(), menuIds, permissionIds);
-        return SUCCESS;
-    }
-
-   
-    
-    //根据角色ID获取权限
-    @Action(value="roleAction_findByRoleId")
-    public String findByRoleId() throws IOException{
-        Long id=getModel().getId();
-        System.out.println("角色ID="+id);
-        
+        this.permissi
         List<Permission> list =roleService.findByRoleId(id);
         System.out.println("权限IDS="+list);
         
@@ -87,16 +57,7 @@ public class RoleAction extends CommonAction<Role> {
         return NONE;
     }
     
-    //根据角色ID获取菜单
-    @Action(value="roleAction_findByRoleId4Ztree")
-    public String findByRoleId4Ztree() throws IOException{
-        Long id=getModel().getId();
-        System.out.println("角色ID==菜单="+id);
-        
-       
-        
-        JsonConfig jsonConfig=new JsonConfig();
-        jsonConfig.setExcludes(new String[]{"roles","childrenMenus","parentMenu"});
+    //根据角色ID获取Excludes(new String[]{"roles","childrenMenus","parentMenu"});
         list2json(list, jsonConfig);
         return NONE;
     }

@@ -68,20 +68,7 @@ public class ImageAction extends ActionSupport {
             // 获取文件名的后缀
             // a.jpg =>不加1 .jpg ,加1 jpg
             String suffix =
-                    imgFileFileName.substring(imgFileFileName.lastIndexOf("."));
-            // 使用UUId生成文件名
-            String fileName =
-                    UUID.randomUUID().toString().replaceAll("-", "") + suffix;
-            File destFile = new File(dirRealPath + "/" + fileName);
-
-            // 保存文件
-            FileUtils.copyFile(imgFile, destFile);
-
-            // http://localhost:8080/bos_management_web/upload/a.jpg
-            // /bos_management_web/upload/a.jpg
-            // /bos_management_web
-            // 获取本项目路径
-            String contextPath = servletContext.getContextPath();
+            
 
             map.put("error", 0);
             map.put("url", contextPath + "/upload/" + fileName);
