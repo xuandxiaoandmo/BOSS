@@ -84,6 +84,14 @@ public class UserRealmImpl extends AuthorizingRealm implements UserService {
 		
 		
 	}
+    @Override
+	public Page<User> findAll(Pageable pageable) {
+		return userRepository.findAll(pageable);
+	}
 
+	@Override
+	public void save(User model) {
+		userRepository.save(model);
+	}
 	
 }
